@@ -1,0 +1,51 @@
+import "./LeftSide.css";
+import React, { useState } from "react";
+import { leftSide } from "../../data";
+import PostModal from "../modals/PostModal";
+
+interface User {
+  user_id: number;
+  name?: string;
+  pseudo?: string;
+  profile_photo?: string;
+}
+
+interface LeftSideProps {
+  user: User;
+}
+
+const LeftSide: React.FC<LeftSideProps> = ({ user }) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div className="left">
+      <ul className="left-menu">
+        {leftSide.map((item, index) => (
+          <li key={index} className="left-menu-item">
+            <a href={`#${item.name.toLowerCase()}`} className="left-menu-link">
+              <span className="menu-icon">{item.icons}</span>
+              <span className="item-name">{item.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div onClick={openModal}>
+        <button className="create-post-button">Create a Post</button>
+        <button className="post-button">Post</button>
+      </div>
+
+      {/* Render the PostModal if isModalOpen is true */}
+      {isModalOpen && <PostModal closeModal={closeModal} user={user} />}
+    </div>
+  );
+};
+
+export default LeftSide;
